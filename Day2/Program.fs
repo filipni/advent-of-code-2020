@@ -19,8 +19,7 @@ let part1 =
 
 let part2 =
     let isValid (index1: int, index2: int, c: char, password: string) =
-        let indices = [1 .. password.Length]
-        let matchingIndices = List.filter (fun i -> password.[i - 1] = c) indices
+        let matchingIndices = [for i in 1..password.Length do if password.[i - 1] = c then i]
         List.exists ((=) index1) matchingIndices <> List.exists ((=) index2) matchingIndices
 
     input
