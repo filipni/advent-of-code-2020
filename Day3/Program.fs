@@ -3,10 +3,13 @@
 let input =
     File.ReadAllLines(@"../../../input.txt") |> Array.toList
 
-let rec traversePath pos map treesHit =
+let rec traversePath pos map treeSum =
     match map with
-    | [] -> treesHit
-    | (x::xs) -> traversePath ((pos + 3) % String.length x) xs (if x.[pos] = '#' then treesHit + 1 else treesHit)
+    | [] -> treeSum
+    | (x::xs) ->
+        let newPosition = (pos + 3) % String.length x
+        let updatedTreeSum = if x.[pos] = '#' then treeSum + 1 else treeSum
+        traversePath newPosition xs updatedTreeSum
 
 let part1 =
     traversePath 0 input 0
