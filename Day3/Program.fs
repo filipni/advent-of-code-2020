@@ -3,7 +3,7 @@
 let input =
     File.ReadAllLines(@"../../../input.txt") |> Array.toList
 
-let rec traversePathRecursive xPos map xDiff yDiff (sum: int64) =
+let rec traversePathRecursive xPos map xDiff yDiff sum =
     match map with
     | [] -> sum
     | x::_ ->
