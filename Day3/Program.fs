@@ -20,14 +20,14 @@ let part1 =
     traversePath input 3 1
 
 let part2 =
-    let result = [
+    [
         traversePath input 1 1
         traversePath input 3 1
         traversePath input 5 1
         traversePath input 7 1
         traversePath input 1 2
     ]
-    result |> List.reduce (fun x y -> x * y) 
+    |> List.reduce (fun x y -> x * y) 
 
 [<EntryPoint>]
 let main _ =
