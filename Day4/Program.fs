@@ -7,7 +7,7 @@ let input =
     File.ReadAllText(@"../../../input.txt").Split(separator)
 
 let createPassport (collection: MatchCollection) =
-    [for c in collection -> c.Groups.[1].Value, c.Groups.[2].Value]
+    [for x in collection -> x.Groups.[1].Value, x.Groups.[2].Value]
     |> Map.ofList
 
 let passports =
