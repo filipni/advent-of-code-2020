@@ -28,6 +28,6 @@ let part2 =
 
 [<EntryPoint>]
 let main _ =
-    printfn "Answer part 1: %d" part1
-    printfn "Answer part 2: %d" part2
+    printfn $"Answer part 1: {part1}"
+    printfn $"Answer part 2: {part2}"
     0

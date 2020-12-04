@@ -17,6 +17,6 @@ let solution n sum =
 
 [<EntryPoint>]
 let main _ =
-    printfn "Answer part 1: %d" (solution 2 2020)
-    printfn "Answer part 2: %d" (solution 3 2020)
+    printfn $"Answer part 1: {solution 2 2020}"
+    printfn $"Answer part 2: {solution 3 2020}"
     0

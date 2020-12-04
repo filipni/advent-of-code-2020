@@ -13,8 +13,8 @@ let rec traversePathRecursive xPos map xDiff yDiff sum =
 
 let traversePath (map: string list) xDiff yDiff =
     let numPositions = if yDiff = 1 then map.Length else map.Length / yDiff + 1
-    [for i in 0..numPositions-1 -> (i * xDiff % map.[0].Length, i * yDiff)]
-    |> List.fold (fun sum (x, y) -> if map.[y].[x] = '#' then sum + 1L else sum) 0L
+    let positions = [for i in 0..numPositions-1 -> i * xDiff % map.[0].Length, i * yDiff]
+    List.fold (fun sum (x, y) -> if map.[y].[x] = '#' then sum + 1L else sum) 0L positions
 
 let part1 =
     traversePath input 3 1
@@ -31,6 +31,6 @@ let part2 =
 
 [<EntryPoint>]
 let main _ =
-    printfn "Answer part 1: %d" part1 
-    printfn "Answer part 2: %d" part2 
+    printfn $"Answer part 1: {part1}"
+    printfn $"Answer part 2: {part2}" 
     0
