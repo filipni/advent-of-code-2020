@@ -6,24 +6,29 @@ let input =
     let separator = $"{Environment.NewLine}{Environment.NewLine}"
     File.ReadAllText(@"../../../input.txt").Split(separator)
 
-let createPassport (collection: MatchCollection) =
+let createPassportMap (collection: MatchCollection) =
     [for x in collection -> x.Groups.[1].Value, x.Groups.[2].Value]
     |> Map.ofList
 
 let passports =
-    Array.map (fun str -> Regex.Matches(str, @"(?:(byr|iyr|eyr|hgt|hcl|ecl|pid|cid):(\S+))")) input
-    |> Array.map (fun x -> createPassport x)
+    input
+    |> Array.map (fun str -> Regex.Matches(str, @"(?:(byr|iyr|eyr|hgt|hcl|ecl|pid|cid):(\S+))"))
+    |> Array.map (fun fields -> createPassportMap fields)
 
 let passportsWithNecessaryFields =
-    let isValid (passport: Map<string, string>) = 
-        passport.Count = 8
-        || (passport.Count = 7 && not (passport.ContainsKey "cid"))
+    let isNorthPoleCredentials (passport: Map<string, string>) =
+        passport.Count = 7 && not (passport.ContainsKey "cid")
 
-    Array.filter isValid passports
+    let hasNecessaryFields (passport: Map<string, string>) = 
+        passport.Count = 8 || isNorthPoleCredentials passport
+
+    Array.filter hasNecessaryFields passports
 
 let validateYear min max (value: string) =
-    Regex.Match(value, "^\d{4}$").Success
-    && int value >= min && int value <= max
+    let inRange year =
+        year >= min && year <= max
+
+    Regex.Match(value, "^\d{4}$").Success && inRange (int value)
 
 let heightLimits =
     Map.empty
@@ -62,21 +67,14 @@ let validationFunctions =
         .Add("pid", validatePassportID)
         .Add("cid", fun _ -> true)
 
-let validatePassportFields (passport: Map<string, string>) =
+let hasValidFields (passport: Map<string, string>) =
     Map.fold (fun res key value -> res && (validationFunctions.[key] value)) true passport
 
 let validPassports =
-    passportsWithNecessaryFields
-    |> Array.filter validatePassportFields
-
-let part1 =
-    passportsWithNecessaryFields |> Array.length
-
-let part2 =
-    validPassports |> Array.length 
+    passportsWithNecessaryFields |> Array.filter hasValidFields
 
 [<EntryPoint>]
 let main _ =
-    printfn $"Answer part 1: {part1}"
-    printfn $"Answer part 2: {part2}"
+    printfn $"Answer part 1: {passportsWithNecessaryFields.Length}"
+    printfn $"Answer part 2: {validPassports.Length}"
     0
