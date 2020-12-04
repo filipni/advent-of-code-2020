@@ -3,7 +3,7 @@ open System.Text.RegularExpressions
 
 let input =
     let extractValues str = 
-        Regex.Match(str, @"(\d+)-(\d+) (\w): (.+)").Groups
+        Regex.Match(str, @"(\d+)-(\d+) (\w): (\w+)").Groups
         |> fun groups -> (int groups.[1].Value, int groups.[2].Value, char groups.[3].Value, groups.[4].Value)
 
     File.ReadAllLines("../../../input.txt")

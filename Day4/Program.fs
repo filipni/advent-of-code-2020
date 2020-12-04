@@ -6,16 +6,13 @@ let input =
     let separator = $"{Environment.NewLine}{Environment.NewLine}"
     File.ReadAllText(@"../../../input.txt").Split(separator)
 
-let createPassport (collection: GroupCollection) =
-    let keys = collection.[2].Captures;
-    let values = collection.[3].Captures
-
-    [for i in 0..keys.Count-1 -> keys.[i].Value, values.[i].Value]
+let createPassport (collection: MatchCollection) =
+    [for c in collection -> c.Groups.[1].Value, c.Groups.[2].Value]
     |> Map.ofList
 
 let passports =
-    Array.map (fun str -> Regex.Match(str, @"((\w{3}):(\S+)\s*)+")) input
-    |> Array.map (fun x -> createPassport x.Groups)
+    Array.map (fun str -> Regex.Matches(str, @"(?:(byr|iyr|eyr|hgt|hcl|ecl|pid|cid):(\S+))")) input
+    |> Array.map (fun x -> createPassport x)
 
 let passportsWithNecessaryFields =
     let isValid (passport: Map<string, string>) = 
@@ -52,7 +49,7 @@ let validatePassportID (value: string) =
     Regex.Match(value, @"^\d{9}$").Success
 
 let validateHairColor (value: string) =
-    Regex.Match(value, "(^#[a-f0-9]{6}$)").Success
+    Regex.Match(value, "^#[a-f0-9]{6}$").Success
 
 let validationFunctions =
     Map.empty
