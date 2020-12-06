@@ -10,7 +10,7 @@ let input =
     |> Array.map extractValues
 
 let part1 =
-    let count x = Seq.filter ((=) x) >> Seq.length
+    let count c = Seq.filter ((=) c) >> Seq.length
 
     input
     |> Array.map (fun (min, max, c, password) -> (min, max, (count c password)))

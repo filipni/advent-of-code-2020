@@ -3,7 +3,7 @@ open System.Text.RegularExpressions
 
 let input =
     let parseInput (str: string) =
-        let matching = Regex.Match(str, @"([FB]{7})([RL]{3})")
+        let matching = Regex.Match(str, @"(^[FB]{7})([RL]{3}$)")
         matching.Groups.[1].Value |> Seq.toList,
         matching.Groups.[2].Value |> Seq.toList
 
