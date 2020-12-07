@@ -22,9 +22,10 @@ let rec containsShinyGold (content: (string * int) list) =
     | [] -> false
     | (bag, _)::xs -> bag = "shiny gold" || containsShinyGold (xs @ rules.[bag]) 
 
-let rec countBags sum (content: (string * int) list) =
-    let repeat n xs = List.concat [for _ in 1..n -> xs]
+let repeat n xs =
+    List.concat [for _ in 1..n -> xs]
 
+let rec countBags sum (content: (string * int) list) =
     match content with
     | [] -> sum
     | (bag, capacity)::xs -> countBags (sum + capacity) (xs @ repeat capacity rules.[bag]) 
