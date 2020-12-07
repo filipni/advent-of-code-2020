@@ -22,11 +22,21 @@ let rec containsShinyGold (content: (string * int) list) =
     | [] -> false
     | (bag, _)::xs -> bag = "shiny gold" || containsShinyGold (xs @ rules.[bag]) 
 
+let rec countBags sum (content: (string * int) list) =
+    let repeat n xs = List.concat [for _ in 1..n -> xs]
+
+    match content with
+    | [] -> sum
+    | (bag, capacity)::xs -> countBags (sum + capacity) (xs @ repeat capacity rules.[bag]) 
+
 let part1 =
     rules |> Map.filter (fun _ value -> containsShinyGold value) |> Map.count
 
+let part2 =
+    countBags 0 rules.["shiny gold"] 
+
 [<EntryPoint>]
 let main _ =
-    printfn $"Answer part 1: {part1}"
-    printfn $"Answer part 2: {0}"
+    //printfn $"Answer part 1: {part1}"
+    printfn $"Answer part 2: {part2}"
     0
