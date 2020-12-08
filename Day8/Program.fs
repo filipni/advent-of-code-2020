@@ -33,8 +33,8 @@ let rec runProgram (state: State) (history: int Set) (program: Map<int, string *
 
 let switchOp op =
     match op with
-    | "jmp", arg -> ("nop", arg)
-    | "nop", arg -> ("jmp", arg)
+    | "jmp", arg -> "nop", arg
+    | "nop", arg -> "jmp", arg
     | _ -> op
 
 let allPossiblePrograms =
