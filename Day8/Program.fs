@@ -2,18 +2,14 @@
 open System.Text.RegularExpressions
 
 let defaultProgram =
-    let parseInput (matching: Match) =
+    let parseInput str = 
+        let matching = Regex.Match(str, @"(nop|acc|jmp) \+?(-?\d+)")
         matching.Groups.[1].Value, int matching.Groups.[2].Value
 
-    let pattern = @"(nop|acc|jmp) \+?(-?\d+)"
-    let extractOperation = (fun str -> Regex.Match(str, pattern)) >> parseInput
-
-    let input = File.ReadAllLines(@"../../../input.txt") |> Array.toList
-    
-    input 
-    |> List.map extractOperation
-    |> List.zip [0..input.Length-1]
-    |> Map.ofList
+    File.ReadAllLines(@"../../../input.txt")
+    |> Seq.map parseInput 
+    |> Seq.zip (seq { 0..1000 })
+    |> Map.ofSeq
 
 type State = { pc: int; acc: int }
 let defaultState = { pc = 0; acc = 0 } 
