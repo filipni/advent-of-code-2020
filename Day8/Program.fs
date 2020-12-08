@@ -44,7 +44,7 @@ let rec allPossiblePrograms pcs (programList: Map<int, string * int> List) =
         let oldOp = defaultProgram.[x]
         let newOp = switchOp oldOp
         if newOp <> oldOp then
-            let newProgram = defaultProgram.Add(x, switchOp defaultProgram.[x])
+            let newProgram = defaultProgram.Add(x, newOp)
             allPossiblePrograms xs (newProgram::programList)
         else
             allPossiblePrograms xs programList
