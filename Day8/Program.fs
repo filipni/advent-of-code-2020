@@ -37,7 +37,7 @@ let switchOp op =
     | "nop", arg -> ("jmp", arg)
     | _ -> op
 
-let rec allPossiblePrograms pcs (programList: Map<int, string * int> List) =
+let rec allPossibleProgramsRecursive pcs (programList: Map<int, string * int> List) =
     match pcs with
     | [] -> programList
     | x::xs -> 
@@ -45,9 +45,14 @@ let rec allPossiblePrograms pcs (programList: Map<int, string * int> List) =
         let newOp = switchOp oldOp
         if newOp <> oldOp then
             let newProgram = defaultProgram.Add(x, newOp)
-            allPossiblePrograms xs (newProgram::programList)
+            allPossibleProgramsRecursive xs (newProgram::programList)
         else
-            allPossiblePrograms xs programList
+            allPossibleProgramsRecursive xs programList
+
+let allPossiblePrograms =
+    List.replicate defaultProgram.Count defaultProgram
+    |> List.zip [0..defaultProgram.Count-1]
+    |> List.map (fun (pc, program) -> program.Add(pc, switchOp program.[pc]))
 
 let part1 =
     let endState = runProgram defaultState Set.empty defaultProgram
@@ -55,7 +60,7 @@ let part1 =
 
 let part2 =
     let endStates =
-        allPossiblePrograms [0..defaultProgram.Count-1] []
+        allPossiblePrograms
         |> List.map (runProgram defaultState Set.empty)
         |> List.filter (fun state -> state.pc = defaultProgram.Count)
     endStates.[0].acc
