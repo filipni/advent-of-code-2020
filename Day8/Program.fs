@@ -50,7 +50,8 @@ let rec allPossiblePrograms pcs (programList: Map<int, string * int> List) =
             allPossiblePrograms xs programList
 
 let part1 =
-    (runProgram defaultState Set.empty defaultProgram).acc
+    let endState = runProgram defaultState Set.empty defaultProgram
+    endState.acc
 
 let part2 =
     let endStates =
