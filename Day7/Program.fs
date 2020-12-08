@@ -22,8 +22,8 @@ let rec containsShinyGold (content: (string * int) list) =
     | [] -> false
     | (bag, _)::xs -> bag = "shiny gold" || containsShinyGold (xs @ rules.[bag]) 
 
-let repeat n xs =
-    List.concat [for _ in 1..n -> xs]
+let repeat n =
+    List.replicate n >> List.concat
 
 let rec countBags sum (content: (string * int) list) =
     match content with
@@ -38,6 +38,6 @@ let part2 =
 
 [<EntryPoint>]
 let main _ =
-    //printfn $"Answer part 1: {part1}"
+    printfn $"Answer part 1: {part1}"
     printfn $"Answer part 2: {part2}"
     0
