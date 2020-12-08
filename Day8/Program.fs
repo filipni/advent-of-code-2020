@@ -43,19 +43,17 @@ let allPossiblePrograms =
     |> List.map (fun (pc, program) -> program.Add(pc, switchOp program.[pc]))
     |> List.filter (fun program -> program <> defaultProgram)
 
-let part1 =
-    let endState = runProgram defaultState Set.empty defaultProgram
-    endState.acc
+let stateAfterFirstLoop =
+    runProgram defaultState Set.empty defaultProgram
 
-let part2 =
-    let endStates =
-        allPossiblePrograms
-        |> List.map (runProgram defaultState Set.empty)
-        |> List.filter (fun state -> state.pc = defaultProgram.Count)
-    endStates.[0].acc
+let stateAfterProgramTermination =
+    allPossiblePrograms
+    |> List.map (runProgram defaultState Set.empty)
+    |> List.filter (fun state -> state.pc = defaultProgram.Count)
+    |> List.head
 
 [<EntryPoint>]
 let main _ =
-    printfn $"Answer part 1: {part1}"
-    printfn $"Answer part 2: {part2}"
+    printfn $"Answer part 1: {stateAfterFirstLoop.acc}"
+    printfn $"Answer part 2: {stateAfterProgramTermination.acc}"
     0
