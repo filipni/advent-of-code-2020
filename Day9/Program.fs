@@ -1,7 +1,6 @@
 ﻿open System.IO
 
-let input =
-    File.ReadAllLines(@"../../../input.txt") |> Array.map int64
+let input = File.ReadAllLines(@"../../../input.txt") |> Array.map int64
 
 let rec XMAS start step (data: int64 array) =
     let numbers = data.[start..start+step-1]
@@ -19,18 +18,15 @@ let rec XMAS start step (data: int64 array) =
 
 let part1 = XMAS 25 25 input
 
-let part2 =
-    let mutable sum = 0L
-    for i in 0..input.Length-1 do
-        for j in i..input.Length-1-i do
-            sum <- sum + input.[j]
-            if sum = part1 then
-                let min = Array.min input.[i..j]
-                let max = Array.max input.[i..j]
-                printfn $"Answer part 2: {min + max}"
-        sum <- 0L
+let part2 = 
+    let intervals = seq { for i in 0..input.Length-1 do
+                            for j in i..input.Length-1-i -> input.[i..j] }
+    intervals
+    |> Seq.map (fun xs -> Array.min xs + Array.max xs, Array.sum xs)
+    |> Seq.pick (fun (answer, sum) -> if sum = part1 then Some(answer) else None)
 
 [<EntryPoint>]
 let main _ =
     printfn $"Answer part 1: {part1}"
+    printfn $"Answer part 2: {part2}"
     0
