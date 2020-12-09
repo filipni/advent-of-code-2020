@@ -67,8 +67,8 @@ let validationFunctions =
         .Add("pid", validatePassportID)
         .Add("cid", fun _ -> true)
 
-let hasValidFields (passport: Map<string, string>) =
-    Map.fold (fun res key value -> res && (validationFunctions.[key] value)) true passport
+let hasValidFields =
+    Map.forall (fun key value -> validationFunctions.[key] value)
 
 let validPassports =
     passportsWithNecessaryFields |> Array.filter hasValidFields

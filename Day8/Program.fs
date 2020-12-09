@@ -7,8 +7,7 @@ let defaultProgram =
         matching.Groups.[1].Value, int matching.Groups.[2].Value
 
     File.ReadAllLines(@"../../../input.txt")
-    |> Seq.map parseInput 
-    |> Seq.zip (seq { 0..1000 })
+    |> Seq.mapi (fun i str -> i, parseInput str)
     |> Map.ofSeq
 
 type State = { pc: int; acc: int }
@@ -35,8 +34,7 @@ let switchOp op =
 
 let allPossiblePrograms =
     List.replicate defaultProgram.Count defaultProgram
-    |> List.zip [0..defaultProgram.Count-1]
-    |> List.map (fun (pc, program) -> program.Add(pc, switchOp program.[pc]))
+    |> List.mapi (fun i program -> program.Add(i, switchOp program.[i]))
     |> List.filter (fun program -> program <> defaultProgram)
 
 let stateAfterFirstLoop =
