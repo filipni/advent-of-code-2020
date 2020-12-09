@@ -14,7 +14,7 @@ let rec traversePathRecursive xPos map xDiff yDiff sum =
 let traversePath (map: string list) xDiff yDiff =
     let numPositions = if yDiff = 1 then map.Length else map.Length / yDiff + 1
     let positions = [for i in 0..numPositions-1 -> i * xDiff % map.[0].Length, i * yDiff]
-    List.fold (fun sum (x, y) -> if map.[y].[x] = '#' then sum + 1L else sum) 0L positions
+    List.sumBy (fun (x, y) -> if map.[y].[x] = '#' then 1L else 0L) positions
 
 let part1 =
     traversePath input 3 1
