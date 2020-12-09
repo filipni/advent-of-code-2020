@@ -8,10 +8,8 @@ let rec XMAS start step (data: int64 array) =
 
     let isAnswer =
         numbers
-        |> Array.map ((-) candidate)
-        |> Array.indexed
+        |> Array.mapi (fun i x -> i, candidate - x)
         |> Array.filter (fun (i, x) -> (numbers.[i] <> x) && (Array.contains x numbers))
-        |> Array.map (fun (_, x) -> x)
         |> Array.isEmpty
 
     if isAnswer then candidate else XMAS (start+1) step data
