@@ -1,11 +1,12 @@
 ﻿open System.IO
 
-let input = File.ReadAllLines(@"../../../input.txt") |> Array.map int |> Array.sort
+let input = File.ReadAllLines(@"../../../input.txt")
+            |> Array.map int |> Array.sort |> Array.toList
 
 let getCompatibleAdapters jolt adapters =
     adapters
-    |> Array.mapi (fun i x -> (i, x, x - jolt))
-    |> Array.filter (fun (_, _, diff) -> diff <= 3)
+    |> List.mapi (fun i x -> (i, x, x - jolt))
+    |> List.filter (fun (_, _, diff) -> diff <= 3)
 
 let updateCount (count: Map<int, int>) diff =
     match count.TryFind(diff) with
@@ -14,28 +15,20 @@ let updateCount (count: Map<int, int>) diff =
 
 let rec findChain jolt (count: Map<int, int>) adapters =
     match getCompatibleAdapters jolt adapters with
-    | [||] -> 
+    | [] -> 
         let finalCount = updateCount count 3
         finalCount.[1] * finalCount.[3]
     | compatibleAdapters -> 
-        let (index, adapter, diff) = Array.head compatibleAdapters
-        findChain adapter (updateCount count diff) adapters.[index+1..]
+        let (i, adapterJolt, diff) = List.head compatibleAdapters
+        findChain adapterJolt (updateCount count diff) adapters.[i+1..]
 
 let rec sumChains jolt adapters =
     match getCompatibleAdapters jolt adapters with
-    | [||] -> 1L
-    | compatibleAdapters ->
-        let length = Array.length compatibleAdapters
-        if length = 2 then
-            let (index, adapter, _) = compatibleAdapters.[0]
-            2L * sumChains adapter adapters.[index+1..]
-        elif length =  3 then
-            let (index2, adapter2, _) = compatibleAdapters.[1]
-            let (index3, adapter3, _) = compatibleAdapters.[2]
-            3L * sumChains adapter2 adapters.[index2+1 ..] + sumChains adapter3 adapters.[index3+1 ..]
-        else
-            let (index, adapter, _) = compatibleAdapters.[0]
-            sumChains adapter adapters.[index+1 ..]
+    | [] -> 1L
+    | [(i, adapterJolt, _)] -> sumChains adapterJolt adapters.[i+1 ..]
+    | [(i, adapterJolt, _); _] -> 2L * sumChains adapterJolt adapters.[i+1..]
+    | [_; (i, iAdapterJolt, _); (j, jAdapterJolt, _)] ->
+        3L * sumChains iAdapterJolt adapters.[i+1..] + sumChains jAdapterJolt adapters.[j+1..]
 
 let part1 = findChain 0 Map.empty input
 let part2 = sumChains 0 input
