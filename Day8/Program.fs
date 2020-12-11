@@ -35,7 +35,7 @@ let switchOp op =
 let allPossiblePrograms =
     List.replicate defaultProgram.Count defaultProgram
     |> List.mapi (fun i program -> program.Add(i, switchOp program.[i]))
-    |> List.filter (fun program -> program <> defaultProgram)
+    |> List.distinct
 
 let stateAfterFirstLoop =
     runProgram defaultState Set.empty defaultProgram
