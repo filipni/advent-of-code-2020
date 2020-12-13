@@ -10,7 +10,7 @@ let getCompatibleAdapters jolt adapters =
 
 let updateCount (count: Map<int, int>) diff =
     match count.TryFind(diff) with
-    | Some(value) -> count.Add(diff, count.[diff] + 1)
+    | Some(value) -> count.Add(diff, value + 1)
     | None -> count.Add(diff, 1)
 
 let rec findChain jolt (count: Map<int, int>) adapters =
