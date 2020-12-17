@@ -3,9 +3,7 @@ open System.IO
 
 let width, height =
     let inputRows = File.ReadAllLines(@"../../../input.txt") 
-    let height = inputRows.Length
-    let width = if height > 0 then inputRows.[0].Length else 0
-    width, height
+    inputRows.Length, inputRows.[0].Length
 
 let indexToPosition index = (index % width, index / width)
 
