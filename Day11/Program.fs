@@ -4,7 +4,7 @@ open System.IO
 let width, height =
     let inputRows = File.ReadAllLines(@"../../../input.txt") 
     let height = inputRows.Length
-    let width = if height > 0 then Seq.length inputRows.[0] else 0
+    let width = if height > 0 then inputRows.[0].Length else 0
     width, height
 
 let indexToPosition index = (index % width, index / width)
@@ -46,7 +46,7 @@ let rec runModel state =
     let occupied = stillOccupied + emptyToOccupied
 
     let nextState = { state with empty = empty; occupied = occupied } 
-    if occupied.Count = state.occupied.Count then state else runModel nextState 
+    if state = nextState then state else runModel nextState 
 
 let part1 =
     let finalState = runModel startingState
