@@ -7,28 +7,21 @@ let width, height =
     let width = if height > 0 then Seq.length inputRows.[0] else 0
     width, height
 
+let indexToPosition index = (index % width, index / width)
+
 type state = { empty: Set<int * int>; occupied: Set<int * int>; floor: Set<int * int> }
 let defaultState = { empty = Set.empty; occupied = Set.empty; floor = Set.empty }
 
-let indexToPosition index = (index % width, index / width)
-
-let rec parseInput index state text =
-    match text with
-    | [] -> state
-    | x::xs ->
-        let position = indexToPosition index
-        let state' = 
-            match x with
-            | '#' -> { state with occupied = state.occupied.Add(position) }
-            | 'L' -> { state with empty = state.empty.Add(position) }
-            | _ -> { state with floor = state.floor.Add(position) }
-
-        parseInput (index + 1) state' xs
+let rec parseInput state (index, c) =
+    let position = indexToPosition index
+    match c with
+    | '#' -> { state with occupied = state.occupied.Add(position) }
+    | 'L' -> { state with empty = state.empty.Add(position) }
+    | _ -> { state with floor = state.floor.Add(position) }
 
 let startingState = 
     File.ReadAllText(@"../../../input.txt").Replace(Environment.NewLine, "")
-    |> Seq.toList
-    |> parseInput 0 defaultState
+    |> Seq.indexed |> Seq.fold parseInput defaultState
 
 let adjacentPositions (x, y) =
     [ for i in [x-1..x+1] do
