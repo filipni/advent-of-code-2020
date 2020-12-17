@@ -15,7 +15,7 @@ let indexToPosition index = (index % width, index / width)
 let rec parseInput index state text =
     match text with
     | [] -> state
-    | x::_ ->
+    | x::xs ->
         let position = indexToPosition index
         let state' = 
             match x with
@@ -23,7 +23,7 @@ let rec parseInput index state text =
             | 'L' -> { state with empty = state.empty.Add(position) }
             | _ -> { state with floor = state.floor.Add(position) }
 
-        parseInput (index + 1) state' text.[1..]
+        parseInput (index + 1) state' xs
 
 let startingState = 
     File.ReadAllText(@"../../../input.txt").Replace(Environment.NewLine, "")
