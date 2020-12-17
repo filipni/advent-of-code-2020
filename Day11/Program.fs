@@ -15,10 +15,10 @@ let indexToPosition index = (index % width, index / width)
 let rec parseInput index state text =
     match text with
     | [] -> state
-    | _ ->
+    | x::_ ->
         let position = indexToPosition index
         let state' = 
-            match List.head text with
+            match x with
             | '#' -> { state with occupied = state.occupied.Add(position) }
             | 'L' -> { state with empty = state.empty.Add(position) }
             | _ -> { state with floor = state.floor.Add(position)}
