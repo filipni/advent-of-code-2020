@@ -5,7 +5,7 @@ let width, height =
     let inputRows = File.ReadAllLines(@"../../../input.txt") 
     inputRows.Length, inputRows.[0].Length
 
-let indexToPosition index = (index % width, index / width)
+let indexToPosition index = index % width, index / width
 
 type state = { empty: Set<int * int>; occupied: Set<int * int>; floor: Set<int * int> }
 let defaultState = { empty = Set.empty; occupied = Set.empty; floor = Set.empty }
