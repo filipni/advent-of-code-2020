@@ -26,24 +26,24 @@ let adjacentPositions (x, y) =
         for j in [y-1..y+1] do
             if (i, j) <> (x, y) then (i, j) ]
 
-let countNeighbours state pos =
-    adjacentPositions pos
+let countNeighbours state position =
+    adjacentPositions position
     |> List.filter (fun x -> state.occupied.Contains(x))
     |> List.length
     
 let rec runModel state =
     let emptyToOccupied =
-        state.empty |> Set.filter (fun pos -> countNeighbours state pos = 0) 
+        state.empty |> Set.filter (fun position -> countNeighbours state position = 0) 
     let stillEmpty = state.empty - emptyToOccupied
 
     let occupiedToEmpty =
-        state.occupied |> Set.filter (fun pos -> countNeighbours state pos >= 4)
+        state.occupied |> Set.filter (fun position -> countNeighbours state position >= 4)
     let stillOccupied = state.occupied - occupiedToEmpty
 
-    let empty = stillEmpty + occupiedToEmpty
-    let occupied = stillOccupied + emptyToOccupied
+    let nextEmpty = stillEmpty + occupiedToEmpty
+    let nextOccupied = stillOccupied + emptyToOccupied
+    let nextState = { state with empty = nextEmpty; occupied = nextOccupied } 
 
-    let nextState = { state with empty = empty; occupied = occupied } 
     if state = nextState then state else runModel nextState 
 
 let part1 =
