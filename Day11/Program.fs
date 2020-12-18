@@ -10,9 +10,9 @@ let indexToPosition index = index % width, index / width
 type state = { empty: Set<int * int>; occupied: Set<int * int>; floor: Set<int * int> }
 let defaultState = { empty = Set.empty; occupied = Set.empty; floor = Set.empty }
 
-let parseInput state (index, c) =
+let parseInput state (index, character) =
     let position = indexToPosition index
-    match c with
+    match character with
     | '#' -> { state with occupied = state.occupied.Add(position) }
     | 'L' -> { state with empty = state.empty.Add(position) }
     | _ -> { state with floor = state.floor.Add(position) }
