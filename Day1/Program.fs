@@ -15,6 +15,17 @@ let solution n sum =
     |> List.pick (fun xs -> if List.sum xs = sum then Some xs else None)
     |> List.reduce (fun x y -> x * y)
 
+let part1 = seq { for x in input do
+                    for y in input do
+                        if x + y = 2020 then x * y }
+            |> Seq.head
+
+let part2 = seq { for x in input do
+                    for y in input do
+                        for z in input do
+                            if x + y + z = 2020 then x * y * z }
+            |> Seq.head
+
 [<EntryPoint>]
 let main _ =
     printfn $"Answer part 1: {solution 2 2020}"
